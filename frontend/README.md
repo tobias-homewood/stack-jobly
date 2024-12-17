@@ -1,8 +1,79 @@
-# React + Vite
+# React App Diagram
+Initial sketch of the layout of the app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- ## App
+        no props
 
-Currently, two official plugins are available:
+        state={currentUser, isLoading}
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+        provideContext={currentUser, setCurrentUser}
+
+
+    - ### Navbar
+
+            no props
+
+            no state
+    - ### Routes
+
+        ##### Authenticated, redirected if not
+        - Companies
+
+                no props
+
+                state={companies, isLoading}
+
+            - SearchForm(Form)
+            - Company
+
+                    props={name, description, image}
+
+        - CompanyJobsList
+            - Job
+
+
+        - Jobs
+
+            - SearchForm(Form)
+            - Job
+
+        - Profile
+
+                no props
+
+                fromContext={currentUser, setCurrentUser}
+
+            - UpdateUserForm (Form)
+                ```js
+                inputs={username, firstName, lastName, email}
+                labels=['username', 'first name', 'last name', 'email']
+                submit={name:"Save Changes", onSubmit: updateUser}
+                ```
+                    
+
+
+
+    
+
+
+#### Not Authenticated, redirected otherwise
+- Login/Signup(Form)
+
+
+
+## Reused Components
+- Form
+
+    Used for the Login/Signup, UpdateUserForm, SearchCompany, SearchJob
+
+        props={inputs, labels, submit(name, onSubmit)}
+
+        state={formData}
+
+- Job
+
+        props={title, companyHandle, salary, equity}
+        
+        state={hasApplied}
+
+        fromContext={currentUser}
