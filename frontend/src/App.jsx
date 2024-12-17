@@ -6,16 +6,21 @@ import {
     Navigate,
 } from "react-router-dom";
 import './App.css'
-import Navbar from "./Navbar";
+import CurrentUserContext from "./utils/currentUserContext";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({ username: "testUser" });
 
     return (
+      <CurrentUserContext.Provider value={ {currentUser, setCurrentUser} }>
         <Router>
-            <Navbar authenticated={currentUser != null} logout={() => setCurrentUser(null)} />
+            <Navbar />
             <Routes>
-                <Route index element={<div>This is the HOMEPAGE</div>} />
+                <Route index element={<Home />} />
 
                 {currentUser ? (
                     <>
@@ -44,17 +49,18 @@ function App() {
                     <>
                         <Route
                             path="/login"
-                            element={<div>This is the LOGIN PAGE</div>}
+                            element={<Login />}
                         />
                         <Route
                             path="/signup"
-                            element={<div>This is the SIGNUP PAGE</div>}
+                            element={<Signup />}
                         />
                     </>
                 )}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>
+      </CurrentUserContext.Provider>
     );
 }
 
