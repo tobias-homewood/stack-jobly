@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import Companies from "./components/Companies";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({ username: "testUser" });
@@ -26,7 +27,7 @@ function App() {
                         <Route path="/companies">
                             <Route
                                 index
-                                element={<div>This is the COMPANIES LIST</div>}
+                                element={<Companies />}
                             />
                             <Route
                                 path=":handle"
