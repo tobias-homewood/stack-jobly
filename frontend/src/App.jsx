@@ -5,7 +5,6 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
-import './App.css'
 import CurrentUserContext from "./utils/currentUserContext";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
