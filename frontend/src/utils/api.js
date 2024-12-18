@@ -43,6 +43,11 @@ export default class JoblyApi {
     return res.companies;
   }
 
+  static async searchCompanies(name) {
+    let res = await this.request(`companies`, { name });
+    return res.companies;
+  }
+
   static async getCompany(handle) {
     let res = await this.request(`companies/${handle}`);
     return res.company;
