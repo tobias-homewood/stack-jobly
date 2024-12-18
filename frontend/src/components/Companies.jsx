@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
 import JoblyApi from "../utils/api";
 import { Link } from "react-router-dom";
-import { Button, Spinner, Form, InputGroup, Container } from "react-bootstrap";
+import { Card, Button, Spinner, Form, InputGroup, Container } from "react-bootstrap";
 
 const Companies = () => {
-    // This is a list of all companies
-    const [allCompanies, setAllCompanies] = useState([]);
-
     // This is a list of companies that are currently being displayed
     const [displayedCompanies, setDisplayedCompanies] = useState([]);
 
@@ -16,7 +12,16 @@ const Companies = () => {
 
     const fetchCompanies = async () => {
         setIsLoading(true);
-        setAllCompanies(await JoblyApi.allCompanies());
+        setDisplayedCompanies(await JoblyApi.allCompanies());
+        setIsLoading(false);
+    };
+
+    const searchCompanies = async () => {
+        if (!search) {
+            return fetchCompanies();
+        }
+        setIsLoading(true);
+        setDisplayedCompanies(await JoblyApi.searchCompanies(search));
         setIsLoading(false);
     };
 
@@ -24,15 +29,6 @@ const Companies = () => {
     useEffect(() => {
         fetchCompanies();
     }, []);
-
-    // this is run whenever the search term changes or the list of companies changes
-    useEffect(() => {
-        setDisplayedCompanies(
-            allCompanies.filter((company) =>
-                company.name.toLowerCase().includes(search.toLowerCase())
-            )
-        );
-    }, [search, allCompanies]);
 
     return (
         <Container>
@@ -43,7 +39,7 @@ const Companies = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                <Button onClick={fetchCompanies}>Search</Button>
+                <Button onClick={searchCompanies}>Search</Button>
             </InputGroup>
             {isLoading && <Spinner animation="border" />}
             {!isLoading &&
