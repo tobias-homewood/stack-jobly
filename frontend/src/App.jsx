@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -11,9 +11,18 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Companies from "./components/Companies";
+import Jobs from "./components/Jobs";
+import JoblyApi from "./utils/api";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState({ username: "testUser" });
+    // Temporary hard-coded user for testing
+    const [currentUser, setCurrentUser] = useState(null);
+    useEffect(() => {
+        const fetchUser = async () => {
+            setCurrentUser(await JoblyApi.getUser("testuser"));
+        }
+        fetchUser();
+    }, []);
 
     return (
       <CurrentUserContext.Provider value={ {currentUser, setCurrentUser} }>
@@ -38,7 +47,7 @@ function App() {
                         </Route>
                         <Route
                             path="/jobs"
-                            element={<div>This is the JOBS LIST</div>}
+                            element={<Jobs />}
                         />
                         <Route
                             path="/profile"
