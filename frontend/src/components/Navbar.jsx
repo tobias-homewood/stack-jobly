@@ -31,7 +31,7 @@ export default function () {
                                 <Nav.Link as={NavLink} to="/profile">
                                     Profile
                                 </Nav.Link>
-                                <Nav.Link onClick={logout}>Logout</Nav.Link>
+                                <Nav.Link onClick={logout}>Logout {currentUser.username}</Nav.Link>
                             </>
                         ) : (
                             <>
