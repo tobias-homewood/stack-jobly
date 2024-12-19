@@ -2,18 +2,21 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3001";
 
-/** API Class.
- *
- * Static class tying together methods used to get/send to to the API.
- * There shouldn't be any frontend-specific stuff here, and there shouldn't
- * be any API-aware stuff elsewhere in the frontend.
- *
+/**
+ * JoblyApi class to interact with the Jobly API.
  */
-
 export default class JoblyApi {
   // the token for interactive with the API will be stored here.
   static token;
 
+  /**
+   * Make an API request.
+   * @param {string} endpoint - The API endpoint.
+   * @param {Object} [data={}] - The data to send with the request.
+   * @param {string} [method="get"] - The HTTP method to use.
+   * @returns {Promise<Object>} - The response data.
+   * @throws {Array<string>} - An array of error messages.
+   */
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
 
@@ -36,58 +39,111 @@ export default class JoblyApi {
 
   // Individual API routes
 
-  /** Get details on a company by handle. */
-
+  /**
+   * Request all companies from the API.
+   * @returns {Promise<Array>} - An array of company objects.
+   */
   static async allCompanies() {
     let res = await this.request(`companies`);
     return res.companies;
   }
 
+  /**
+   * Search for companies by name.
+   * @param {string} name - A string to search for in the company names.
+   * @returns {Promise<Array>} - An array of company objects.
+   */
   static async searchCompanies(name) {
     let res = await this.request(`companies`, { name });
     return res.companies;
   }
 
+  /**
+   * Get a specific company by handle.
+   * @param {string} handle - The handle of the company.
+   * @returns {Promise<Object>} - A company object.
+   */
   static async getCompany(handle) {
     let res = await this.request(`companies/${handle}`);
     return res.company;
   }
 
+  /**
+   * Request all jobs from the API.
+   * @returns {Promise<Array>} - An array of job objects.
+   */
   static async allJobs() {
     let res = await this.request(`jobs`);
     return res.jobs;
   }
 
+  /**
+   * Search for jobs by title.
+   * @param {string} title - A string to search for in the job titles.
+   * @returns {Promise<Array>} - An array of job objects.
+   */
   static async searchJobs(title) {
     let res = await this.request(`jobs`, { title });
     return res.jobs;
   }
 
+  /**
+   * Get a specific job by ID.
+   * @param {string} id - The ID of the job.
+   * @returns {Promise<Object>} - A job object.
+   */
   static async getJob(id) {
     let res = await this.request(`jobs/${id}`);
     return res.job;
   }
 
+  /**
+   * Log in a user.
+   * @param {Object} data - The login data.
+   * @returns {Promise<string>} - The authentication token.
+   */
   static async login(data) {
     let res = await this.request(`auth/token`, data, "post");
     return res.token;
   }
 
+  /**
+   * Register a new user.
+   * @param {Object} data - The registration data.
+   * @returns {Promise<string>} - The authentication token.
+   */
   static async register(data) {
     let res = await this.request(`auth/register`, data, "post");
     return res.token;
   }
 
+  /**
+   * Get a user by username.
+   * @param {string} username - The username of the user.
+   * @returns {Promise<Object>} - A user object.
+   */
   static async getUser(username) {
     let res = await this.request(`users/${username}`);
     return res.user;
   }
 
+  /**
+   * Update a user's data.
+   * @param {string} username - The username of the user.
+   * @param {Object} data - The data to update.
+   * @returns {Promise<Object>} - The updated user object.
+   */
   static async updateUser(username, data) {
     let res = await this.request(`users/${username}`, data, "patch");
     return res.user;
   }
 
+  /**
+   * Apply to a job.
+   * @param {string} username - The username of the user.
+   * @param {string} jobId - The ID of the job.
+   * @returns {Promise<void>}
+   */
   static async applyToJob(username, jobId) {
     await this.request(`users/${username}/jobs/${jobId}`, {}, "post");
   }
