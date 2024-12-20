@@ -5,10 +5,10 @@ import CurrentUserContext from "../utils/currentUserContext";
 
 export default function () {
     const navigate = useNavigate();
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const { currentUser, clearToken } = useContext(CurrentUserContext);
     const logout = (e) => {
         e.preventDefault();
-        setCurrentUser(null);
+        clearToken();
         navigate("/");
     };
     return (

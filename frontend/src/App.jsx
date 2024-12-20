@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -12,64 +11,52 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Companies from "./components/Companies";
 import Jobs from "./components/Jobs";
-import JoblyApi from "./utils/api";
+import useAuthentication from "./hooks/useAuthentication";
 
 function App() {
-    // Temporary hard-coded user for testing
-    const [currentUser, setCurrentUser] = useState(null);
-    useEffect(() => {
-        const fetchUser = async () => {
-            setCurrentUser(await JoblyApi.getUser("testuser"));
-        }
-        fetchUser();
-    }, []);
+    // Authentication hook handles the logic for setting up the state for currentUser and token in local storage
+    const { currentUser, setCurrentUser, setToken, clearToken, isLoading } =
+        useAuthentication();
+
+    // Don't render the app until we've checked for a user
+    if (isLoading) return null;
 
     return (
-      <CurrentUserContext.Provider value={ {currentUser, setCurrentUser} }>
-        <Router>
-            <Navbar />
-            <Routes>
-                <Route index element={<Home />} />
+        <CurrentUserContext.Provider
+            value={{ currentUser, setCurrentUser, setToken, clearToken }}
+        >
+            <Router>
+                <Navbar />
+                <Routes>
+                    <Route index element={<Home />} />
 
-                {currentUser ? (
-                    <>
-                        <Route path="/companies">
+                    {currentUser ? (
+                        <>
+                            <Route path="/companies">
+                                <Route index element={<Companies />} />
+                                <Route
+                                    path=":handle"
+                                    element={
+                                        <div>This is the COMPANY JOB LIST</div>
+                                    }
+                                />
+                            </Route>
+                            <Route path="/jobs" element={<Jobs />} />
                             <Route
-                                index
-                                element={<Companies />}
+                                path="/profile"
+                                element={<div>This is the PROFILE PAGE</div>}
                             />
-                            <Route
-                                path=":handle"
-                                element={
-                                    <div>This is the COMPANY JOB LIST</div>
-                                }
-                            />
-                        </Route>
-                        <Route
-                            path="/jobs"
-                            element={<Jobs />}
-                        />
-                        <Route
-                            path="/profile"
-                            element={<div>This is the PROFILE PAGE</div>}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <Route
-                            path="/login"
-                            element={<Login />}
-                        />
-                        <Route
-                            path="/signup"
-                            element={<Signup />}
-                        />
-                    </>
-                )}
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-        </Router>
-      </CurrentUserContext.Provider>
+                        </>
+                    ) : (
+                        <>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<Signup />} />
+                        </>
+                    )}
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </Router>
+        </CurrentUserContext.Provider>
     );
 }
 

@@ -5,15 +5,13 @@ import JoblyApi from "../utils/api";
 import Form from "./Form";
 
 const Signup = () => {
-    const { setCurrentUser } = useContext(CurrentUserContext);
+    const { setToken } = useContext(CurrentUserContext);
 
     const navigate = useNavigate();
 
     const signup = async (formData) => {
         const token = await JoblyApi.register(formData);
-        JoblyApi.token = token;
-        const user = await JoblyApi.getUser(formData.username);
-        setCurrentUser(user);
+        setToken(token);
         navigate("/");
     }
 
