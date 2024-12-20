@@ -53,6 +53,7 @@ export default class JoblyApi {
      * @returns {Promise<Array>} - An array of company objects.
      */
     static async searchCompanies(name) {
+        if (!name) return await this.allCompanies();
         let res = await this.request(`companies`, { name });
         return res.companies;
     }
@@ -82,6 +83,7 @@ export default class JoblyApi {
      * @returns {Promise<Array>} - An array of job objects.
      */
     static async searchJobs(title) {
+        if (!title) return await this.allJobs();
         let res = await this.request(`jobs`, { title });
         return res.jobs;
     }
