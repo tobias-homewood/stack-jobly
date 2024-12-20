@@ -13,6 +13,17 @@ const Form = ({ title, inputs, onSubmit, submitButtonText = "Submit" }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Prevent submission if any disabled inputs have changed
+        for (const input of inputs) {
+            if (input.disabled && input.value !== formData[input.name]) {
+                setErrors(prevErrors => [...prevErrors, `${input.label} cannot be changed`,
+                    `${input.value} !== ${formData[input.name]}`
+                ]);
+                return;
+            }
+        }
+
         try {
             await onSubmit(formData);
         } catch (e) {
@@ -27,9 +38,9 @@ const Form = ({ title, inputs, onSubmit, submitButtonText = "Submit" }) => {
     };
 
     return (
-        <Container>
+        <Container className="mt-3">
             <h1 className="text-light">{title}</h1>
-            <Card className="p-3">
+            <Card className="p-3 mt-3">
                 {errors.length > 0 && (
                     <Alert variant="danger">
                         {errors.map((error, idx) => (
@@ -48,6 +59,7 @@ const Form = ({ title, inputs, onSubmit, submitButtonText = "Submit" }) => {
                                 value={formData[input.name]}
                                 name={input.name}
                                 onChange={handleChange}
+                                disabled={input.disabled}
                             />
                         </BootstrapForm.Group>
                     ))}
@@ -68,6 +80,7 @@ Form.propTypes = {
             label: PropTypes.string.isRequired,
             type: PropTypes.string,
             value: PropTypes.string,
+            disabled: PropTypes.bool,
         })
     ).isRequired,
     onSubmit: PropTypes.func.isRequired,
