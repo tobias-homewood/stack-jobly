@@ -13,6 +13,7 @@ import Companies from "./components/Companies";
 import Jobs from "./components/Jobs";
 import useAuthentication from "./hooks/useAuthentication";
 import CompanyDetail from "./components/CompanyDetail";
+import Profile from "./components/Profile";
 
 function App() {
     // Authentication hook handles the logic for setting up the state for currentUser and token in local storage
@@ -43,7 +44,7 @@ function App() {
                             <Route path="/jobs" element={<Jobs />} />
                             <Route
                                 path="/profile"
-                                element={<div>This is the PROFILE PAGE</div>}
+                                element={<Profile />}
                             />
                         </>
                     ) : (

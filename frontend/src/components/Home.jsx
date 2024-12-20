@@ -9,7 +9,7 @@ const Home = () => {
     <div className='mt-5 text-center text-light'>
       <h1>Welcome to Jobly</h1>
       <p>The best place to find your next job!</p>
-      {currentUser ? <h2>Welcome back, {currentUser.username}!</h2> : (
+      {currentUser ? <h2>Welcome back, {currentUser.firstName}!</h2> : (
         <div>
           <Button as={Link} to='/login' className='m-2'>Log in</Button>
           <Button as={Link} to='/signup' className='m-2'>Sign up</Button>
