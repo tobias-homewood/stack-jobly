@@ -1,23 +1,17 @@
 import { useState, useEffect } from "react";
+import useLocalStorage from "./useLocalStorage";
 import JoblyApi from "../utils/api";
 
 export default function useAuthentication() {
-    // Get token from local storage
-    const getToken = () => {
-        return localStorage.getItem("token");
-    };
-
-    const [token, setToken] = useState(getToken());
+    const [token, setToken] = useLocalStorage("token");
 
     const saveToken = (userToken) => {
         JoblyApi.token = userToken;
-        localStorage.setItem("token", userToken);
         setToken(userToken);
     };
 
     const clearToken = () => {
         JoblyApi.token = null;
-        localStorage.removeItem("token");
         setToken(null);
     };
 
