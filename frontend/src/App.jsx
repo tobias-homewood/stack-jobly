@@ -12,6 +12,7 @@ import Signup from "./components/Signup";
 import Companies from "./components/Companies";
 import Jobs from "./components/Jobs";
 import useAuthentication from "./hooks/useAuthentication";
+import CompanyDetail from "./components/CompanyDetail";
 
 function App() {
     // Authentication hook handles the logic for setting up the state for currentUser and token in local storage
@@ -36,9 +37,7 @@ function App() {
                                 <Route index element={<Companies />} />
                                 <Route
                                     path=":handle"
-                                    element={
-                                        <div>This is the COMPANY JOB LIST</div>
-                                    }
+                                    element={<CompanyDetail />}
                                 />
                             </Route>
                             <Route path="/jobs" element={<Jobs />} />
