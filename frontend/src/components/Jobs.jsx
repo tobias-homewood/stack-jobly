@@ -2,31 +2,18 @@ import { useState, useEffect } from "react";
 import JoblyApi from "../utils/api";
 import Job from "./Job";
 import { Button, Spinner, Form, InputGroup, Container } from "react-bootstrap";
+import useLoading from "../hooks/useLoading";
 
 const Jobs = () => {
-  const [displayedJobs, setDisplayedJobs] = useState([]);
-
-    const [isLoading, setIsLoading] = useState(true);
+    // This is a list of jobs that are currently being displayed
+    const [displayedJobs, setDisplayedJobs, isLoading] = useLoading(
+        JoblyApi.allJobs()
+    );
     const [search, setSearch] = useState("");
 
-    const fetchJobs = async () => {
-        setIsLoading(true);
-        setDisplayedJobs(await JoblyApi.allJobs());
-        setIsLoading(false);
+    const searchJobs = () => {
+        setDisplayedJobs(JoblyApi.searchJobs(search));
     };
-
-    const searchJobs = async () => {
-        if (!search) {
-            return fetchJobs();
-        }
-        setIsLoading(true);
-        setDisplayedJobs(await JoblyApi.searchJobs(search));
-        setIsLoading(false);
-    };
-
-    useEffect(() => {
-        fetchJobs();
-    }, []);
 
     return (
         <Container>
@@ -41,11 +28,9 @@ const Jobs = () => {
             </InputGroup>
             {isLoading && <Spinner animation="border" />}
             {!isLoading &&
-                displayedJobs.map((job) => (
-                    <Job key={job.id} job={job} />
-                ))}
+                displayedJobs.map((job) => <Job key={job.id} job={job} />)}
         </Container>
     );
-}
+};
 
-export default Jobs
+export default Jobs;

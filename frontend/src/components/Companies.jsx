@@ -2,33 +2,16 @@ import { useState, useEffect } from "react";
 import JoblyApi from "../utils/api";
 import Company from "./Company";
 import { Button, Spinner, Form, InputGroup, Container } from "react-bootstrap";
+import useLoading from "../hooks/useLoading";
 
 const Companies = () => {
     // This is a list of companies that are currently being displayed
-    const [displayedCompanies, setDisplayedCompanies] = useState([]);
-
-    const [isLoading, setIsLoading] = useState(true);
+    const [displayedCompanies, setDisplayedCompanies, isLoading] = useLoading(JoblyApi.allCompanies());
     const [search, setSearch] = useState("");
 
-    const fetchCompanies = async () => {
-        setIsLoading(true);
-        setDisplayedCompanies(await JoblyApi.allCompanies());
-        setIsLoading(false);
+    const searchCompanies = () => {
+        setDisplayedCompanies(JoblyApi.searchCompanies(search));
     };
-
-    const searchCompanies = async () => {
-        if (!search) {
-            return fetchCompanies();
-        }
-        setIsLoading(true);
-        setDisplayedCompanies(await JoblyApi.searchCompanies(search));
-        setIsLoading(false);
-    };
-
-    // this is run ONCE at the beginning
-    useEffect(() => {
-        fetchCompanies();
-    }, []);
 
     return (
         <Container>
