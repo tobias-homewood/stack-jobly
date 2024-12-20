@@ -26,8 +26,8 @@ const Job = ({ job }) => {
                 <Card.Title>{job.title}</Card.Title>
                 <Card.Subtitle>{job.companyName}</Card.Subtitle>
                 <Card.Text className="my-3">
-                    <div>Salary: {job.salary || 0}</div>
-                    <div>Equity: {job.equity || 0}</div>
+                    Salary: {job.salary || 0} <br />
+                    Equity: {job.equity || 0}
                 </Card.Text>
                 <div className="d-flex justify-content-end">
                     {applied ? (
