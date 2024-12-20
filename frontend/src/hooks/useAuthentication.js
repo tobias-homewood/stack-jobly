@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useLocalStorage from "./useLocalStorage";
 import useLoading from "./useLoading";
 import JoblyApi from "../utils/api";
@@ -17,12 +17,12 @@ export default function useAuthentication() {
     };
 
     const getUser = async () => {
-        if (!token) {
+        try {
+            const { username } = JoblyApi.decode(token);
+            return await JoblyApi.getUser(username);
+        } catch (e) {
             return null;
         }
-        
-        const { username } = JoblyApi.decode(token);
-        return await JoblyApi.getUser(username);
     };
 
     const [currentUser, setCurrentUser, isLoading] = useLoading(getUser());

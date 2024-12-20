@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function useLoading(initialValue) {
     const [isLoading, setIsLoading] = useState(true);
 
-    const getInitialValue = async () => {
-        const value = await initialValue;
-        setIsLoading(false);
-        return value;
-    }
+    const [state, setState] = useState(null);
 
-    const [state, setState] = useState(getInitialValue);
+    useEffect(() => {
+        const setInitialValue = async () => {
+            setState(await initialValue);
+            setIsLoading(false);
+        };
+        setInitialValue();
+    }, [initialValue]);
 
     const updateState = async (newValue) => {
         setIsLoading(true);
