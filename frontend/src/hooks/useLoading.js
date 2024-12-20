@@ -11,7 +11,7 @@ export default function useLoading(initialValue) {
             setIsLoading(false);
         };
         setInitialValue();
-    }, [initialValue]);
+    }, []);
 
     const updateState = async (newValue) => {
         setIsLoading(true);
